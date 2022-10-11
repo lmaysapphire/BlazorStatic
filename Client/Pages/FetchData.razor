@@ -40,7 +40,7 @@ else
         <Columns>
             <Column T="WeatherForecast" Field="@nameof(WeatherForecast.Date)">
                 <CellTemplate>
-                    @context.Item.Date.ToShortDateString();
+                    @context.Item.Date.ToShortDateString()
                 </CellTemplate>
             </Column>
             <Column T="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Title="Temp. (C)" />
