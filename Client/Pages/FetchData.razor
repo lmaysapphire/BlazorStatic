@@ -9,38 +9,55 @@
 
 @if (forecasts == null)
 {
-    <p><em>Loading...</em></p>
+    <MudDataGrid Items="dummy">
+        <Columns>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.Date)">
+                <CellTemplate>
+                    <MudProgressCircular Size="Size.Small" Color="Color.Info" Indeterminate="true" />
+                </CellTemplate>
+            </Column>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Title="Temp. (C)">
+                <CellTemplate>
+                    <MudProgressCircular Size="Size.Small" Color="Color.Info" Indeterminate="true" />
+                </CellTemplate>
+            </Column>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureF)" Title="Temp. (F)">
+                <CellTemplate>
+                    <MudProgressCircular Size="Size.Small" Color="Color.Info" Indeterminate="true" />
+                </CellTemplate>
+            </Column>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.Summary)">
+                <CellTemplate>
+                    <MudProgressCircular Size="Size.Small" Color="Color.Info" Indeterminate="true" />
+                </CellTemplate>
+            </Column>
+        </Columns>
+    </MudDataGrid>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <MudDataGrid Items="forecasts">
+        <Columns>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.Date)">
+                <CellTemplate>
+                    @context.Item.Date.ToShortDateString()
+                </CellTemplate>
+            </Column>
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Title="Temp. (C)" />
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureF)" Title="Temp. (F)" />
+            <Column T="WeatherForecast" Field="@nameof(WeatherForecast.Summary)" />
+        </Columns>
+    </MudDataGrid>
 }
 
 @code {
     private WeatherForecast[]? forecasts;
 
+    private WeatherForecast[] dummy = new WeatherForecast[] { new() };
+
     protected override async Task OnInitializedAsync()
     {
+        await Task.Delay(2000);
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
     }
 
